@@ -32,6 +32,11 @@ If you encounter any problems, set ``CONSOLE=true`` in ``qx-phantom.js``.
 
 The status code returned by the script is the number of tests that failed. This is especially interesting if you are planning to integrate running unit tests into continuous integration or some kind of automatic workflow, such as commit hooks or reports.
 
+## Known Issues
+
+ * PhantomJS does not expose complete stack traces. See [Bug #240](http://code.google.com/p/phantomjs/issues/detail?id=240)
+   and [Bug #226](http://code.google.com/p/phantomjs/issues/detail?id=226).
+
 ## Help
 
  * [qooxdoo-devel](http://qooxdoo.org/community/mailing_lists)
