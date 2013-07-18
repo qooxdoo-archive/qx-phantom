@@ -24,7 +24,11 @@ At the top of ``qx-phantom.js``, adjust the URL to the Test Runner you built bef
 
 ## Usage
 
-Tell PhantomJS to run the tests (here the framework UI tests):
+Tell PhantomJS to run the tests:
+
+    $ phantomjs qx-phantom.js
+
+You can also limit the tests by setting the namespace (here the framework UI tests):
 
     $ phantomjs qx-phantom.js qx.test.ui
 
