@@ -51,6 +51,16 @@ page.open url, (status) ->
   # Remember onLoadFinished was handled
   loadedBefore = true
 
+  # Flag for watch dog
+  isTestSuiteRunning = false
+
+  # Run watch dog and close process when test suite is not running
+  window.setTimeout ->
+    if !isTestSuiteRunning
+      console.log "Error running tests";
+      phantom.exit 1;
+  , 120000 # 2 minutes 
+
   # Run tests
   page.evaluate ->
     if typeof qx == "undefined"
@@ -62,6 +72,7 @@ page.open url, (status) ->
       state = e.getData()
 
       if state == "ready"
+        isTestSuiteRunning = true
         runner.view.run()
 
   processTestResults = ->
