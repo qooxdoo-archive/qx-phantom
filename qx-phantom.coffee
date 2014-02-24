@@ -57,7 +57,7 @@ page.open url, (status) ->
   # Run watch dog and close process when test suite is not running
   window.setTimeout ->
     if !isTestSuiteRunning
-      console.log "Error running tests";
+      console.log "Unable to start test suite";
       phantom.exit 1;
   , 120000 # 2 minutes 
 

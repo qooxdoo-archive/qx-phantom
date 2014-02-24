@@ -43,7 +43,7 @@
     isTestSuiteRunning = false;
     window.setTimeout(function() {
       if (!isTestSuiteRunning) {
-        console.log("Error running tests");
+        console.log("Unable to start test suite");
         return phantom.exit(1);
       }
     }, 120000);
