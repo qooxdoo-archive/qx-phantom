@@ -42,7 +42,7 @@ loadedBefore = false
 page.open url, (status) ->
   if status isnt "success"
     console.log "Unable to load page"
-    phantom.exit()
+    phantom.exit 1
 
   # We have been here before, do not handle onLoadFinished again
   if loadedBefore
