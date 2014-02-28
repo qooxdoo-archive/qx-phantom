@@ -65,14 +65,16 @@ page.open url, (status) ->
   # Remember onLoadFinished was handled
   loadedBefore = true
 
-  # Flag for watch dog
-  isTestSuiteRunning = false
-
   # Run watch dog and close process when test suite is not running
   window.setTimeout ->
-    if !isTestSuiteRunning
-      console.log "Unable to start test suite";
-      phantom.exit 1;
+    testSuiteState = page.evaluate ->
+      qx.core.Init.getApplication().runner.getTestSuiteState()
+
+    switch testSuiteState
+      when "init", "loading", "ready"
+        console.log "Unable to start test suite";
+        phantom.exit 1;
+
   , 120000 # 2 minutes 
 
   # Run tests
@@ -88,10 +90,8 @@ page.open url, (status) ->
         state = e.getData()
 
         if state == "ready"
-          isTestSuiteRunning = true
           runner.view.run()
     else
-      isTestSuiteRunning = true
       runner.view.run()
 
 

@@ -48,7 +48,7 @@
   loadedBefore = false;
 
   page.open(url, function(status) {
-    var isTestSuiteRunning, processTestResults;
+    var processTestResults;
     if (status !== "success") {
       console.log("Unable to load page");
       phantom.exit(1);
@@ -57,11 +57,17 @@
       return;
     }
     loadedBefore = true;
-    isTestSuiteRunning = false;
     window.setTimeout(function() {
-      if (!isTestSuiteRunning) {
-        console.log("Unable to start test suite");
-        return phantom.exit(1);
+      var testSuiteState;
+      testSuiteState = page.evaluate(function() {
+        return qx.core.Init.getApplication().runner.getTestSuiteState();
+      });
+      switch (testSuiteState) {
+        case "init":
+        case "loading":
+        case "ready":
+          console.log("Unable to start test suite");
+          return phantom.exit(1);
       }
     }, 120000);
     page.evaluate(function() {
@@ -76,12 +82,10 @@
           var state;
           state = e.getData();
           if (state === "ready") {
-            isTestSuiteRunning = true;
             return runner.view.run();
           }
         });
       } else {
-        isTestSuiteRunning = true;
         return runner.view.run();
       }
     });
