@@ -68,12 +68,18 @@ page.open url, (status) ->
       return
 
     runner = qx.core.Init.getApplication().runner
-    runner.addListener "changeTestSuiteState", (e) ->
-      state = e.getData()
 
-      if state == "ready"
-        isTestSuiteRunning = true
-        runner.view.run()
+    if runner.getTestSuiteState() isnt "ready"
+      runner.addListener "changeTestSuiteState", (e) ->
+        state = e.getData()
+
+        if state == "ready"
+          isTestSuiteRunning = true
+          runner.view.run()
+    else
+      isTestSuiteRunning = true
+      runner.view.run()
+
 
   processTestResults = ->
 

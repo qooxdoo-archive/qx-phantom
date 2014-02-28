@@ -54,14 +54,19 @@
         return;
       }
       runner = qx.core.Init.getApplication().runner;
-      return runner.addListener("changeTestSuiteState", function(e) {
-        var state;
-        state = e.getData();
-        if (state === "ready") {
-          isTestSuiteRunning = true;
-          return runner.view.run();
-        }
-      });
+      if (runner.getTestSuiteState() !== "ready") {
+        return runner.addListener("changeTestSuiteState", function(e) {
+          var state;
+          state = e.getData();
+          if (state === "ready") {
+            isTestSuiteRunning = true;
+            return runner.view.run();
+          }
+        });
+      } else {
+        isTestSuiteRunning = true;
+        return runner.view.run();
+      }
     });
     processTestResults = function() {
       var error, exception, getRunnerStateAndResults, results, skip, state, success, test, testName, _i, _len, _ref, _ref1;
