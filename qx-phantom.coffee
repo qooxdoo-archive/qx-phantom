@@ -36,6 +36,20 @@ page = new WebPage()
 page.onConsoleMessage = (msg) ->
   console.log "CONSOLE: #{msg}" if CONSOLE
 
+# Attach error logging
+page.onError = (msg, trace) ->
+  msgStack = ["ERROR: #{msg}"]
+
+  if (trace && trace.length)
+    msgStack.push "TRACE:"
+    trace.forEach (t) ->
+      functionContent = ""
+      functionContent = "(in function '#{t.function}')" if t.function
+      msgStack.push " -> #{t.file}: #{t.line} #{functionContent}"
+
+  console.error(msgStack.join("\n"))
+  return
+
 # For reasons unknown, onLoadFinished is called twice
 loadedBefore = false
 

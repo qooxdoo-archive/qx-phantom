@@ -28,6 +28,23 @@
     }
   };
 
+  page.onError = function(msg, trace) {
+    var msgStack;
+    msgStack = ["ERROR: " + msg];
+    if (trace && trace.length) {
+      msgStack.push("TRACE:");
+      trace.forEach(function(t) {
+        var functionContent;
+        functionContent = "";
+        if (t["function"]) {
+          functionContent = "(in function '" + t["function"] + "')";
+        }
+        return msgStack.push(" -> " + t.file + ": " + t.line + " " + functionContent);
+      });
+    }
+    console.error(msgStack.join("\n"));
+  };
+
   loadedBefore = false;
 
   page.open(url, function(status) {
