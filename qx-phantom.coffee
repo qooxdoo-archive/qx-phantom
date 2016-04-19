@@ -2,6 +2,8 @@
 # $ phantomjs qx-phantom.js [Namespace] [URL]
 #
 
+system = require('system')
+
 ####### Configuration #######
 
 # URL of Test Runner (Console View)
@@ -16,13 +18,13 @@ CONSOLE = false
 #############################
 
 # First argument (optional): Scope tests to namespace
-testClasses = phantom.args[0]
+testClasses = system.args[1]
 
 # Second argument (optional): The URL of the Test Runner
 runnerUrl = if RUNNER? and RUNNER != ""
-  phantom.args[1] || RUNNER
+  system.args[2] || RUNNER
 else
-  phantom.args[1]
+  system.args[2]
 
 throw new Error("No URL configured or given") unless runnerUrl?
 
@@ -47,7 +49,7 @@ page.onError = (msg, trace) ->
       functionContent = "(in function '#{t.function}')" if t.function
       msgStack.push " -> #{t.file}: #{t.line} #{functionContent}"
 
-  console.error(msgStack.join("\n"))
+  #console.error(msgStack.join("\n"))
   return
 
 # For reasons unknown, onLoadFinished is called twice
